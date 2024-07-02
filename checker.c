@@ -5,11 +5,11 @@ typedef int (*CheckFunc)(float);
 typedef struct {
     CheckFunc check;
     float value;
-    const char *message;
+    const char *mes;
 } Check;
  
-void printMessage(const char *message) {
-    printf("%s", message);
+void printMessage(const char *mes) {
+    printf("%s", mes);
 }
  
 int isTemperatureInRange(float temperature) {
@@ -33,7 +33,7 @@ int batteryIsOk(float temperature, float soc, float chargeRate) {
  
     for (int i = 0; i < sizeof(checks) / sizeof(checks[0]); ++i) {
         if (!checks[i].check(checks[i].value)) {
-            printMessage(checks[i].message);
+            printMessage(checks[i].mes);
             return 0;
         }
     }
