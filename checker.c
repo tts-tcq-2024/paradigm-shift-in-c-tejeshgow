@@ -4,7 +4,7 @@ typedef int (*CheckFunc)(float);
 typedef struct {
     CheckFunc check;
     float value;
-    const char *message;
+    const char *abc;
 } Check;
 int isTemperatureInRange(float temperature) {
     return (temperature >= 0 && temperature <= 45);
@@ -23,7 +23,7 @@ int batteryIsOk(float temperature, float soc, float chargeRate) {
     };
     for (int i = 0; i < sizeof(checks) / sizeof(checks[0]); ++i) {
         if (!checks[i].check(checks[i].value)) {
-            printf("%s", checks[i].message);
+            printf("%s", checks[i].abc);
             return 0;
         }
     }
