@@ -5,35 +5,35 @@ typedef int (*CheckFunc)(float);
 typedef struct {
     CheckFunc check;
     float value;
-    const char *mes;
+    const char *message;
 } Check;
  
-void printMessage(const char *mes) {
-    printf("%s", mes);
-}
- 
-int isTemperatureInRange(float temperature) {
+int temperatureInRange(float temperature) {
     return (temperature >= 0 && temperature <= 45);
 }
  
-int isSocInRange(float soc) {
+int SocInRange(float soc) {
     return (soc >= 20 && soc <= 80);
 }
  
-int isChargeRateInRange(float chargeRate) {
+int ChargeRateInRange(float chargeRate) {
     return (chargeRate <= 0.8);
+}
+ 
+void printMessageofStatus(const char *message) {
+    printf("%s", message);
 }
  
 int batteryIsOk(float temperature, float soc, float chargeRate) {
     Check checks[] = {
-        {isTemperatureInRange, temperature, "Temperature out of range!\n"},
-        {isSocInRange, soc, "State of Charge out of range!\n"},
-        {isChargeRateInRange, chargeRate, "Charge Rate out of range!\n"}
+        {temperatureInRange, temperature, "Temperature out of range!\n"},
+        {SocInRange, soc, "SoC out of range!\n"},
+        {ChargeRateInRange, chargeRate, "Charge Rate out of range!\n"}
     };
  
     for (int i = 0; i < sizeof(checks) / sizeof(checks[0]); ++i) {
         if (!checks[i].check(checks[i].value)) {
-            printMessage(checks[i].mes);
+            printMessageofStatus(checks[i].message);
             return 0;
         }
     }
@@ -43,10 +43,12 @@ int batteryIsOk(float temperature, float soc, float chargeRate) {
  
 int main() {
     assert(batteryIsOk(25, 70, 0.7));
-    assert(!batteryIsOk(50, 85, 0));
-    assert(!batteryIsOk(30, 85, 0));
+    assert(!batteryIsOk(60, 70, 0));
     assert(!batteryIsOk(25, 70, 0.9));
+    assert(!batteryIsOk(30, 95, 0.1));
     printf("All tests passed!\n");
     return 0;
 }
+ 
+
  
